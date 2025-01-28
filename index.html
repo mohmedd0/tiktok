@@ -85,11 +85,20 @@
     </div>
 
     <script>
-        const validCodes = ["369", "595", "579", "379", "735", "495", "336", "987", "146", "953", "471", "693", "921", "751", "693", "008", "020", "036", "609", "666", "580", "085", "456", "987", "321", "359", "087", "364", "159", "599", "693", "658"];
+        const validCodes = [
+            "0006", "0406", "0458", "0492", "0876", "0937", "1165", "1295", "1599", "1789",
+            "1821", "1926", "1929", "1998", "2155", "2195", "2453", "2677", "2799", "2915",
+            "2981", "3055", "3059", "3254", "3515", "3580", "3836", "3871", "3943", "3997",
+            "4095", "4324", "4352", "4600", "4625", "4806", "4835", "4964", "5169", "5422",
+            "5481", "5700", "6042", "6064", "6251", "6388", "6449", "6513", "6591", "6773",
+            "7126", "7248", "7314", "7318", "7533", "7636", "7647", "7741", "8355", "8390",
+            "8551", "8635", "9089", "9277", "9563", "9585", "9616", "9643", "9927", "9936"
+        ];
 
         function submitCode() {
             const codeInput = document.getElementById("codeInput").value.trim();
             const messageDiv = document.getElementById("message");
+            const usedCodes = JSON.parse(localStorage.getItem("usedCodes")) || []; // الأكواد المُدخلة مسبقًا
 
             if (codeInput === "") {
                 messageDiv.className = "message error";
@@ -97,12 +106,20 @@
             } else if (!validCodes.includes(codeInput)) {
                 messageDiv.className = "message error";
                 messageDiv.innerHTML = "❌ الكود غير صالح، حاول مرة أخرى!";
+            } else if (usedCodes.includes(codeInput)) {
+                messageDiv.className = "message error";
+                messageDiv.innerHTML = "❌ هذا الكود تم استخدامه مسبقًا!";
             } else {
                 messageDiv.className = "message success";
                 messageDiv.innerHTML = `✅ تم إدخال الكود بنجاح! <span>${codeInput}</span> 🎉`;
 
+                // تخزين الكود في التخزين المحلي
+                usedCodes.push(codeInput);
+                localStorage.setItem("usedCodes", JSON.stringify(usedCodes));
+
+                // الانتقال إلى الصفحة التالية بعد فترة
                 setTimeout(() => {
-                    window.location.href = "page2.html"; // رابط إلى الصفحة التالية
+                    window.location.href = "page2.html";
                 }, 2000);
             }
         }
