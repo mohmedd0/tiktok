@@ -10,6 +10,7 @@
             background: #333; /* أسود غامق */
             height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             margin: 0;
@@ -50,6 +51,7 @@
         button {
             width: 100%;
             padding: 15px;
+            margin-top: 10px;
             background: #f39c12; /* أصفر */
             color: white;
             border: none;
@@ -81,6 +83,7 @@
         <h2>🌐 أدخل الكود الخاص بك 📲</h2>
         <input type="text" id="codeInput" placeholder="أدخل الكود هنا">
         <button onclick="submitCode()">✅ إرسال الكود</button>
+        <button onclick="buyCode()">🛍🚀 شراء كود</button>
         <div id="message" class="message"></div>
     </div>
 
@@ -122,6 +125,13 @@
                     window.location.href = "page2.html";
                 }, 2000);
             }
+        }
+
+        function buyCode() {
+            const phoneNumber = "+201129512038";
+            const message = encodeURIComponent("مرحبًا، أريد شراء كود 🚀");
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappUrl, "_blank");
         }
     </script>
 </body>
